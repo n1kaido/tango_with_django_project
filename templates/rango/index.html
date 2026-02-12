@@ -10,9 +10,14 @@
     <div>
         hello world!
     </div>
+    <a href="/rango/add_category/">Add a New Category</a>
     <ul>
     {% for category in categories %}
-        <li>{{ category.name }}</li>
+        <li>
+            <a href="/rango/category/{{ category.name }}/">
+                {{ category.name }}
+            </a>
+        </li>
     {% endfor %}
     </ul>
 </body>
