@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from rango.models import Category
 from rango.models import Page
 from rango.forms import CategoryForm
+from rango.forms import PageForm
+from rango.models import Category
+
 
 def index(request):
     category_list = Category.objects.order_by('name')[:5]
@@ -36,3 +39,29 @@ def add_category(request):
             print(form.errors)
 
     return render(request, 'rango/add_category.html', {'form': form})
+
+
+def add_page(request, category_name):
+    try:
+        category = Category.objects.get(name=category_name)
+    except Category.DoesNotExist:
+        category = None
+
+    form = PageForm()
+
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+                return show_category(request, category_name)
+        else:
+            print(form.errors)
+
+    context_dict = {'form': form, 'category': category}
+    return render(request, 'rango/add_page.html', context=context_dict)
+
