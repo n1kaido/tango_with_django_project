@@ -10,5 +10,10 @@
     <div>
         hello world!
     </div>
+    <ul>
+    {% for category in categories %}
+        <li>{{ category.name }}</li>
+    {% endfor %}
+    </ul>
 </body>
 </html>
